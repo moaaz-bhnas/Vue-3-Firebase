@@ -1,55 +1,68 @@
 <template>
-  <h1>{{ title }}</h1>
-  <p>Welcome...</p>
+  <div>
+    <!-- Refs: you can access that ref inside <script> with: this.$refs.title -->
+    <h1 ref="title">{{ title }}</h1>
+    <!-- Attribute binding: by prepending the attribute with (:), value is evaluated as js -->
+    <!-- Short for v-bind: -->
+    <p :data-attribute="attribute">Welcome...</p>
 
-  <teleport to="#modals" v-if="showModal">
-    <Modal theme="sale" @close="toggleModal">
-      <template v-slot:links>
-        <a href="#">sign up now</a>
-        <a href="#">more info</a>
-      </template>
-      <h1>Ninja Givaway!</h1>
-      <p>Grab your ninja swag for half price!</p>
-    </Modal>
-  </teleport>  
+    <!-- Teleports vue content to an entirely different place in the DOM -->
+    <teleport to="#modals" v-if="showModal">
+      <!-- Capturing the custom event emitted from child -->
+      <Modal theme="sale" @close="toggleModal">
+        <!-- Slots: used to pass template content to a child component -->
+        <h1>Ninja Givaway!</h1>
+        <p>Grab your ninja swag for half price!</p>
+        <!-- Named slots: When you have a bit complex structure -->
+        <!-- This is supposed to be placed somewhere by its name -->
+        <template v-slot:links>
+          <a href="#">sign up now</a>
+          <a href="#">more info</a>
+        </template>
+      </Modal>
+    </teleport>
 
-  <teleport to="#modals" v-if="showModalTwo">
-    <Modal @close="toggleModalTwo">
-      <h1>Sign up to the Newsletter</h1>
-      <p>For updates and promo codes!</p>
-    </Modal>
-  </teleport>
+    <teleport to="#modals" v-if="showModalTwo">
+      <Modal @close="toggleModalTwo">
+        <h1>Sign up to the Newsletter</h1>
+        <p>For updates and promo codes!</p>
+      </Modal>
+    </teleport>
 
-  <button @click.alt="toggleModal">open modal (alt click)</button>
-  <button @click="toggleModalTwo">open modal 2</button>
+    <!-- Another click event modifier  -->
+    <button @click.alt="toggleModal">open modal (alt click)</button>
+    <button @click="toggleModalTwo">open modal 2</button>
+  </div>
 </template>
 
 <script>
-import Modal from './components/Modal'
+import Modal from "./components/Modal";
 
 export default {
-  name: 'App',
+  name: "App",
   components: { Modal },
   data() {
     return {
-      title: 'My First Vue App!',
+      title: "My First Vue App!",
       showModal: false,
       showModalTwo: false,
-    }
+      attribute: "anything",
+    };
   },
   methods: {
     toggleModal() {
-      this.showModal = !this.showModal
+      this.showModal = !this.showModal;
     },
     toggleModalTwo() {
-      this.showModalTwo = !this.showModalTwo
-    }
-  }
-}
+      this.showModalTwo = !this.showModalTwo;
+    },
+  },
+};
 </script>
 
 <style>
-#app, #modals {
+#app,
+#modals {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
